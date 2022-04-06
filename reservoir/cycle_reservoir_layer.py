@@ -93,7 +93,7 @@ class Cycle_Reservoir(torch.nn.Module):
 
 
     def add_weight(self, name, init_value):
-        param = torch.nn.Parameter(init_value)
+        param = torch.nn.Parameter(init_value,requires_grad=False)
         self.register_parameter(name, param)
         return param
     
