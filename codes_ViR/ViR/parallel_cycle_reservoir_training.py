@@ -39,7 +39,7 @@ print(f"device: {device}")
 
 #Image Augumentation
 
-data_type = "cifar10" # cifar100
+data_type = "MNIST" # cifar100
 
 if data_type == "cifar10":
     mean = [0.485, 0.456, 0.406]
@@ -74,19 +74,25 @@ else:
     train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms)
     test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms)
     classes = 100
+if data_type == "MNIST":
+    train_list = datasets.MNIST('./datasets', train=True, transform=train_transforms, download=True)
+    test_list = datasets.MNIST('./datasets', train=False, transform=test_transforms, download=True)
+    classes = 10
+
+
 
 train_loader = DataLoader(train_list, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_list, batch_size=batch_size, shuffle=False)
 
-print(f"{data_type} train data num: {train_list.data.shape}")
-print(f"{data_type} test data num: {test_list.data.shape}")
+#print(f"{data_type} train data num: {train_list.data.shape}")
+#print(f"{data_type} test data num: {test_list.data.shape}")
 
 # image setting
-dim = 128
-image_size = 32
+dim = 112
+image_size = 28
 patch_size = 4
-mlp_dim = 512
-channels = 3
+mlp_dim = 448
+channels = 1
 
 # reservoir setting
 depth = 3
