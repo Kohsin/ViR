@@ -31,7 +31,7 @@ def init_reservoir(units, cycle_weight, jump_weight, jump_size, connection_weigh
     m = int(random.randint(0, units))
     sparse_matrix[c][m] = 0
     return sparse_matrix
-""""
+"""
 def init_weight(dim_x, dim_y, sparsity):
     sparse_matrix = sp.rand(dim_x, dim_y, density=sparsity, format='csr').toarray()
     return sparse_matrix
