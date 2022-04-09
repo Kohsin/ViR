@@ -34,7 +34,7 @@ def seed_everything(seed):
 
 seed_everything(seed)
 
-device = torch.device("cpu") # 'cuda:0' if torch.cuda.is_available() else 
+device = torch.device('cuda:0' if torch.cuda.is_available() else"cpu") #  
 print(f"device: {device}")
 
 #Image Augumentation
