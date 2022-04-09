@@ -4,6 +4,7 @@ import numpy as np
 import scipy.sparse as sp
 import random
 
+cishu = 0
 def init_reservoir(units, cycle_weight, jump_weight, jump_size, connection_weight):
     sparse_matrix = torch.ones(units, units) * connection_weight
     random_sign = torch.rand(units, units)
@@ -79,9 +80,11 @@ class Cycle_Reservoir(torch.nn.Module):
         x = xt.clone().detach()
         input_part = torch.mm(x, self.kernel)
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
-
+        cishu++
+        print(cishu)
         output = torch.cat([x, h_prev * (1 - self.leaky) + state_part], dim=1)
         reservoir_output = torch.tanh(self.weight_out(output))
+        print("")
         reservoir_output1 = torch.cat([x, state_part, reservoir_output,
                                       x ** 2, state_part ** 2,  reservoir_output ** 2], dim=1)
         reservoir_output2 = torch.tanh(self.weight(reservoir_output1))
