@@ -80,7 +80,7 @@ class Cycle_Reservoir(torch.nn.Module):
         x = xt.clone().detach()
         input_part = torch.mm(x, self.kernel)
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
-        cishu++
+        cishu=cishu+1
         print(cishu)
         output = torch.cat([x, h_prev * (1 - self.leaky) + state_part], dim=1)
         reservoir_output = torch.tanh(self.weight_out(output))
