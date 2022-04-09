@@ -4,7 +4,7 @@ import numpy as np
 import scipy.sparse as sp
 import random
 import math
-
+"""
 def init_reservoir(units, cycle_weight, jump_weight, jump_size, connection_weight):
     sparse_matrix = torch.ones(units, units) * connection_weight
     random_sign = torch.rand(units, units)
@@ -31,7 +31,7 @@ def init_reservoir(units, cycle_weight, jump_weight, jump_size, connection_weigh
     m = int(random.randint(0, units))
     sparse_matrix[c][m] = 0
     return sparse_matrix
-
+""""
 def init_weight(dim_x, dim_y, sparsity):
     sparse_matrix = sp.rand(dim_x, dim_y, density=sparsity, format='csr').toarray()
     return sparse_matrix
@@ -73,6 +73,7 @@ class Cycle_Reservoir(torch.nn.Module):
             "sensory_mu": (0.3, 0.8),
         }
         self._allocate_parameters()
+        """
         W = init_reservoir(self.units, cycle_weight, jump_weight, jump_size, connection_weight)
         if self.leaky == 1:
             W = spectral_norm_scaling(W, spectral_radius)
@@ -83,7 +84,7 @@ class Cycle_Reservoir(torch.nn.Module):
             W = spectral_norm_scaling(W, spectral_radius)
             self.recurrent_kernel = (W + I * (self.leaky - 1)) * (1 / self.leaky) #W
         self.recurrent_kernel = nn.Parameter(self.recurrent_kernel, requires_grad=False)
-
+"""
         self.weight_out = nn.Linear(self.units + self.output_size, self.output_size)
         self.weight = nn.Linear(self.units * 2 + self.output_size * 4, self.output_size)
 
