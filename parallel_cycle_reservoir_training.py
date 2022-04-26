@@ -18,7 +18,7 @@ print(f"Torch: {torch.__version__}")
 
 # Training settings
 batch_size = 100
-epochs =100#100
+epochs =1#100
 lr = 3e-4
 gamma = 0.7
 seed = 42
