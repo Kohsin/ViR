@@ -17,7 +17,7 @@ from reservoir.parallel_reservoir import Parallel_Reservoir
 print(f"Torch: {torch.__version__}")
 
 # Training settings
-batch_size = 1
+batch_size = 100
 epochs = 100
 lr = 3e-4
 gamma = 0.7
