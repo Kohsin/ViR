@@ -170,7 +170,7 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        print("len", len(train_loader))
+        #print("len", len(train_loader))
         acc = (output.argmax(dim=1) == label).float().mean()
         epoch_accuracy += acc / len(train_loader)
         epoch_loss += loss / len(train_loader)
