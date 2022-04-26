@@ -17,7 +17,7 @@ from reservoir.parallel_reservoir import Parallel_Reservoir
 print(f"Torch: {torch.__version__}")
 
 # Training settings
-batch_size = 100
+batch_size = 1
 epochs = 100
 lr = 3e-4
 gamma = 0.7
@@ -170,7 +170,7 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
+        print("len", len(train_loader))
         acc = (output.argmax(dim=1) == label).float().mean()
         epoch_accuracy += acc / len(train_loader)
         epoch_loss += loss / len(train_loader)
