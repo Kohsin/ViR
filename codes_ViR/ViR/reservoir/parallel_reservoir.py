@@ -96,7 +96,7 @@ class Parallel_Reservoir(nn.Module):
         self.to_latent = nn.Identity()
 
         input_dim = dim * (round(image_size / patch_size) ** 2)
-        print("input_dim ", input_dim.shape)
+        print("input_dim ", input_dim)
         self.mlp_head = nn.Sequential(
             nn.LayerNorm(input_dim),
             nn.Linear(input_dim, num_classes)
@@ -105,7 +105,7 @@ class Parallel_Reservoir(nn.Module):
     def forward(self, img, mask = None):
         x = self.to_patch_embedding(img)
         b, n, _ = x.shape
-
+        
         x = self.dropout(x)
         x = self.reservoir(x, mask)
         x = x.view(x.shape[0], -1)
