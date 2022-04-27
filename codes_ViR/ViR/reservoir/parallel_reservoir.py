@@ -103,15 +103,13 @@ class Parallel_Reservoir(nn.Module):
         )
 
     def forward(self, img, mask = None):
-        print("img.shape",img.shape)
         x = self.to_patch_embedding(img)
-        print("x.shape",x.shape)
         b, n, _ = x.shape
-        print("b.shape", b)
-        print("n.shape", n)
         
         x = self.dropout(x)
+        print("x_before.shape",x.shape)
         x = self.reservoir(x, mask)
+        print("x_after.shape",x.shape)
         x = x.view(x.shape[0], -1)
         x = self.to_latent(x)
         x = self.mlp_head(x)
