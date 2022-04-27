@@ -107,10 +107,11 @@ class Parallel_Reservoir(nn.Module):
         b, n, _ = x.shape
         
         x = self.dropout(x)
-        print("x_before.shape",x.shape)
-        x = self.reservoir(x, mask)
-        print("x_after.shape",x.shape)
-        x = x.view(x.shape[0], -1)
-        x = self.to_latent(x)
-        x = self.mlp_head(x)
-        return x
+
+        y1 = self.reservoir(x, mask)
+        y2 = self.reservoir(x+y1, mask)
+        y3 = self.reservoir(x+y2, mask)
+        y4 = y3.view(y3.shape[0], -1)
+        y4 = self.to_latent(y4)
+        y4 = self.mlp_head(y4)
+        return y4
