@@ -39,7 +39,7 @@ print(f"device: {device}")
 
 #Image Augumentation
 
-data_type = "MNIST" # cifar100
+data_type = "cifar10" # cifar100
 
 if data_type == "cifar10":
     mean = [0.485, 0.456, 0.406]
@@ -50,7 +50,7 @@ else:
 
 train_transforms = transforms.Compose(
     [
-        transforms.RandomCrop(28, padding=4),
+        transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
@@ -65,7 +65,6 @@ test_transforms = transforms.Compose(
 )
 
 # load data (cifar10 or cifar100)
-"""
 if data_type == "cifar10":
     train_list = datasets.CIFAR10('./datasets', train=True, transform=train_transforms)
     test_list = datasets.CIFAR10('./datasets', train=False, transform=test_transforms)
@@ -74,11 +73,6 @@ else:
     train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms)
     test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms)
     classes = 100
-    """
-if data_type == "MNIST":
-    train_list = datasets.MNIST('./datasets', train=True, transform=train_transforms, download=True)
-    test_list = datasets.MNIST('./datasets', train=False, transform=test_transforms, download=True)
-    classes = 10
 
 
 
@@ -89,11 +83,11 @@ test_loader = DataLoader(test_list, batch_size=batch_size, shuffle=False)
 #print(f"{data_type} test data num: {test_list.data.shape}")
 
 # image setting
-dim = 112
-image_size = 28
+dim = 128
+image_size = 32
 patch_size = 4
-mlp_dim = 448
-channels = 1
+mlp_dim = 512
+channels = 3
 
 # reservoir setting
 depth = 3
