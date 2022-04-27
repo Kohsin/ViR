@@ -76,6 +76,7 @@ class Cycle_Reservoir(torch.nn.Module):
 
     def forward(self, xt, h_prev):
         x = xt.clone().detach()
+        
         input_part = torch.mm(x, self.kernel)
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
         output = torch.cat([x, h_prev * (1 - self.leaky) + state_part], dim=1)
