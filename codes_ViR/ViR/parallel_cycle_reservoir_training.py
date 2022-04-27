@@ -66,12 +66,12 @@ test_transforms = transforms.Compose(
 
 # load data (cifar10 or cifar100)
 if data_type == "cifar10":
-    train_list = datasets.CIFAR10('./datasets', train=True, transform=train_transforms)
-    test_list = datasets.CIFAR10('./datasets', train=False, transform=test_transforms)
+    train_list = datasets.CIFAR10('./datasets', train=True, transform=train_transforms, download=True)
+    test_list = datasets.CIFAR10('./datasets', train=False, transform=test_transforms, download=True)
     classes = 10
 else:
-    train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms)
-    test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms)
+    train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms, download=True)
+    test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms, download=True)
     classes = 100
 
 
