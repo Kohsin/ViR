@@ -103,6 +103,7 @@ class Parallel_Reservoir(nn.Module):
         )
 
     def forward(self, img, mask = None):
+        print("img.shape",img.shape)
         x = self.to_patch_embedding(img)
         print("x.shape",x.shape)
         b, n, _ = x.shape
