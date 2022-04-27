@@ -104,7 +104,7 @@ class ReservoirLayer(torch.nn.Module):
     def forward(self, x):
         if self.h_prev is None:
             self.h_prev = self.init_hidden(x.shape[0]).to(x.device)
-        print("x in cycle_rc_l",x.shape)
+        #print("x in cycle_rc_l",x.shape)
         hs = []
 
         for t in range(x.shape[1]):
