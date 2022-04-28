@@ -186,6 +186,8 @@ for epoch in range(epochs):
             acc = (test_output.argmax(dim=1) == label).float().mean()
             epoch_test_accuracy += acc / len(test_loader)
             epoch_test_loss += test_loss / len(test_loader)
+            
+    rows[epoch+1]=[epoch,epoch_loss,epoch_accuracy,epoch_test_loss,epoch_test_accuracy]
     with open('test.csv','w')as f:
         f_csv.writerows(rows[epoch+1])
     print(
