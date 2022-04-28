@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from tqdm import tqdm
 import time
+import csv
 
 from reservoir.parallel_reservoir import Parallel_Reservoir
 
@@ -148,7 +149,11 @@ current_time = time.strftime("%Y-%b-%d_%H;%M;%S", time.localtime())
 #     os.makedirs(saved_model_path)
 
 print("time:", current_time)
-
+headers = ['epoch','loss','acc','test_loss','acc']
+with open('test.csv','w')as f:
+    f_csv = csv.writer(f)
+    f_csv.writerow(headers)
+    
 # training
 for epoch in range(epochs):
     epoch_loss = 0
@@ -181,7 +186,8 @@ for epoch in range(epochs):
             acc = (test_output.argmax(dim=1) == label).float().mean()
             epoch_test_accuracy += acc / len(test_loader)
             epoch_test_loss += test_loss / len(test_loader)
-
+    with open('test.csv','w')as f:
+        f_csv.writerows(rows[epoch+1])
     print(
             f"Epoch : {epoch + 1} - loss : {epoch_loss:.4f} - acc: {epoch_accuracy:.4f} - test_loss : {epoch_test_loss:.4f} - test_acc: {epoch_test_accuracy:.4f}\n"
     )
