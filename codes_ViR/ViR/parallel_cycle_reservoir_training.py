@@ -11,7 +11,6 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from tqdm import tqdm
 import time
-import csv
 
 from reservoir.parallel_reservoir import Parallel_Reservoir
 
@@ -35,7 +34,7 @@ def seed_everything(seed):
 
 seed_everything(seed)
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
+device = torch.device('cuda:2' if torch.cuda.is_available() else "cpu")
 print(f"device: {device}")
 
 #Image Augumentation
@@ -66,22 +65,21 @@ test_transforms = transforms.Compose(
 )
 
 # load data (cifar10 or cifar100)
+
 if data_type == "cifar10":
-    train_list = datasets.CIFAR10('./datasets', train=True, transform=train_transforms, download=True)
-    test_list = datasets.CIFAR10('./datasets', train=False, transform=test_transforms, download=True)
+    train_list = datasets.CIFAR10('./datasets', train=True, transform=train_transforms)
+    test_list = datasets.CIFAR10('./datasets', train=False, transform=test_transforms)
     classes = 10
 else:
-    train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms, download=True)
-    test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms, download=True)
+    train_list = datasets.CIFAR100('./datasets', train=True, transform=train_transforms)
+    test_list = datasets.CIFAR100('./datasets', train=False, transform=test_transforms)
     classes = 100
-
-
 
 train_loader = DataLoader(train_list, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_list, batch_size=batch_size, shuffle=False)
 
-#print(f"{data_type} train data num: {train_list.data.shape}")
-#print(f"{data_type} test data num: {test_list.data.shape}")
+print(f"{data_type} train data num: {train_list.data.shape}")
+print(f"{data_type} test data num: {test_list.data.shape}")
 
 # image setting
 dim = 128
@@ -149,11 +147,7 @@ current_time = time.strftime("%Y-%b-%d_%H;%M;%S", time.localtime())
 #     os.makedirs(saved_model_path)
 
 print("time:", current_time)
-headers = ['epoch','loss','acc','test_loss','acc']
-with open('test.csv','w')as f:
-    f_csv = csv.writer(f)
-    f_csv.writerow(headers)
-    
+
 # training
 for epoch in range(epochs):
     epoch_loss = 0
@@ -169,7 +163,7 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        #print("len", len(train_loader))
+
         acc = (output.argmax(dim=1) == label).float().mean()
         epoch_accuracy += acc / len(train_loader)
         epoch_loss += loss / len(train_loader)
@@ -186,10 +180,7 @@ for epoch in range(epochs):
             acc = (test_output.argmax(dim=1) == label).float().mean()
             epoch_test_accuracy += acc / len(test_loader)
             epoch_test_loss += test_loss / len(test_loader)
-            
-    rows[epoch+1]=[epoch,epoch_loss,epoch_accuracy,epoch_test_loss,epoch_test_accuracy]
-    with open('test.csv','w')as f:
-        f_csv.writerows(rows[epoch+1])
+
     print(
             f"Epoch : {epoch + 1} - loss : {epoch_loss:.4f} - acc: {epoch_accuracy:.4f} - test_loss : {epoch_test_loss:.4f} - test_acc: {epoch_test_accuracy:.4f}\n"
     )
