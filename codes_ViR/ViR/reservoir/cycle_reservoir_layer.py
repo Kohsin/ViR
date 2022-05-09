@@ -116,6 +116,7 @@ class ReservoirLayer(torch.nn.Module):
                 print("x.shape8_",t," ",x.shape)
                 print("xt.shape8_",t," ",xt.shape)
                 print("self.h_prev.shape8_",t," ",self.h_prev.shape)
+                print("output.shape8_",t," ",output.shape)
             hs.append(output)
 
         hs = torch.stack(hs, dim=1)
