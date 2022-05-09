@@ -107,10 +107,15 @@ class ReservoirLayer(torch.nn.Module):
             self.h_prev = self.init_hidden(x.shape[0]).to(x.device)
 
         hs = []
-
+        print("x.shape7",x.shape)
         for t in range(x.shape[1]):
+
             xt = x[:, t]
             self.h_prev, output = self.cycle_reservoir_layer(xt, self.h_prev)
+            if t <= 2:
+                print("x.shape8_",i," ",x.shape)
+                print("xt.shape8_",i," ",xt.shape)
+                print("self.h_prev.shape8_",i," ",self.h_prev.shape)
             hs.append(output)
 
         hs = torch.stack(hs, dim=1)
