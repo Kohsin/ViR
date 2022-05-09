@@ -54,6 +54,7 @@ class Cycle_Reservoir(torch.nn.Module):
         self.spectral_radius = spectral_radius
         self.leaky = leaky
         self.sparsity = sparsity
+
         self.kernel = torch.Tensor(init_weight(input_size, self.units, sparsity * self.input_scaling))
         self.kernel = nn.Parameter(self.kernel, requires_grad=False)
 
@@ -76,9 +77,9 @@ class Cycle_Reservoir(torch.nn.Module):
 
     def forward(self, xt, h_prev):
         x = xt.clone().detach()
-        
         input_part = torch.mm(x, self.kernel)
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
+
         output = torch.cat([x, h_prev * (1 - self.leaky) + state_part], dim=1)
         reservoir_output = torch.tanh(self.weight_out(output))
         reservoir_output1 = torch.cat([x, state_part, reservoir_output,
@@ -104,7 +105,7 @@ class ReservoirLayer(torch.nn.Module):
     def forward(self, x):
         if self.h_prev is None:
             self.h_prev = self.init_hidden(x.shape[0]).to(x.device)
-        #print("x in cycle_rc_l",x.shape)
+
         hs = []
 
         for t in range(x.shape[1]):
