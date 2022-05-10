@@ -59,7 +59,7 @@ class Reservoir(nn.Module):
         total_output = torch.zeros(x.shape).to(self.device)
         for i, layer in enumerate(self.layers):
             reservoir, ff = layer
-            x1,_,x2 = x.nn.svd(x)
+            #x1,_,x2 = torch.svd(x)
             output = reservoir(x)
             '''
             output1 = reservoir(x1)
