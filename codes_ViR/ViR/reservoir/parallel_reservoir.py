@@ -53,19 +53,31 @@ class Reservoir(nn.Module):
                     jump_weight=jump_weight,
                     jump_size=jump_size,
                     connection_weight=connection_weight),
+                ReservoirLayer(
+                    input_size=dim,
+                    units=reservoir_units,
+                    input_scaling=input_scaling,
+                    spectral_radius=spectral_radius,
+                    leaky=leaky,
+                    sparsity=sparsity,
+                    output_size=dim,
+                    cycle_weight=cycle_weight,
+                    jump_weight=jump_weight,
+                    jump_size=jump_size,
+                    connection_weight=connection_weight),
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x, mask = None):
         total_output = torch.zeros(x.shape).to(self.device)
         for i, layer in enumerate(self.layers):
-            reservoir, ff = layer
-            #x1,_,x2 = torch.svd(x)
-            output = reservoir(x)
-            '''
-            output1 = reservoir(x1)
-            output2 = reservoir(x2)
-            output = nn.cat(output1,output2)
-            '''
+            reservoir1, reservoir2, ff = layer
+            x1,_,x2 = torch.svd(x)
+            #output = reservoir(x)
+            
+            output1 = reservoir1(x1)
+            output2 = reservoir2(x2)
+            output = torch.cat(output1,output2)
+            
             output = ff(output)
             total_output += output
         return total_output / self.depth
