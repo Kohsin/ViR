@@ -68,7 +68,7 @@ class Reservoir(nn.Module):
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, x2, mask = None):
-        total_output = torch.zeros(torch.cat((x1,x2)).shape).to(self.device)
+        total_output = torch.zeros(torch.cat((x1,x2),dim=-1).shape).to(self.device)
         #x1,_,x2 = torch.svd(x)
         #print("x before x1x2.shape",x.shape)
         #print("x1.shape",x1.shape)
@@ -82,7 +82,7 @@ class Reservoir(nn.Module):
             
             output1 = reservoir1(x1)
             output2 = reservoir2(x2)
-            output = torch.cat((output1,output2))
+            output = torch.cat((output1,output2),dim=-1)
             
             output = ff(output)
             total_output += output
