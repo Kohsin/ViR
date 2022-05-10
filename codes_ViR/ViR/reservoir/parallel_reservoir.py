@@ -124,8 +124,8 @@ class Parallel_Reservoir(nn.Module):
 
         self.mlp_head = nn.Sequential(
             nn.LayerNorm(input_dim),
-            nn.Linear(input_dim, 100),
-            nn.Linear(100, 10)
+            nn.Linear(input_dim, 100)
+            #nn.Linear(100, num_classes)
         )
 
     def forward(self, img, mask = None):
@@ -149,4 +149,5 @@ class Parallel_Reservoir(nn.Module):
         print("x.shape5",x.shape)
         x = self.mlp_head(x)
         print("x.shape6",x.shape)
+        nn.Linear(100, num_classes)
         return x
