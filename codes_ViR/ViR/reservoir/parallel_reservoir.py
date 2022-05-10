@@ -39,6 +39,10 @@ class Reservoir(nn.Module):
         self.layers = nn.ModuleList([])
         self.device = device
         self.depth = depth
+        self.to_patch_embedding = nn.Sequential(
+            Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
+            nn.Linear(patch_dim, dim),
+        )
         for i in range(self.depth):
             self.layers.append(nn.ModuleList([
                 ReservoirLayer(
@@ -73,6 +77,8 @@ class Reservoir(nn.Module):
         print("x before x1x2.shape",x.shape)
         print("x1.shape",x1.shape)
         print("x2.shape",x2.shape)
+        x1 = self.to_patch_embedding(x1)
+        x2 = self.to_patch_embedding(x2)
         for i, layer in enumerate(self.layers):
             reservoir1, reservoir2, ff = layer
             
@@ -92,11 +98,12 @@ class Parallel_Reservoir(nn.Module):
         super().__init__()
         assert image_size % patch_size == 0, 'Image dimensions must be divisible by the patch size.'
         patch_dim = channels * patch_size ** 2
-
+'''
         self.to_patch_embedding = nn.Sequential(
             Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
             nn.Linear(patch_dim, dim),
         )
+        '''
         self.dropout = nn.Dropout(dropout)
 
         self.reservoir = Reservoir(
