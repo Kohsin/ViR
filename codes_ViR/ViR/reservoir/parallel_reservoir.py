@@ -53,6 +53,7 @@ class Reservoir(nn.Module):
                     jump_weight=jump_weight,
                     jump_size=jump_size,
                     connection_weight=connection_weight),
+                '''
                 ReservoirLayer(
                     input_size=dim,
                     units=reservoir_units,
@@ -65,26 +66,22 @@ class Reservoir(nn.Module):
                     jump_weight=jump_weight,
                     jump_size=jump_size,
                     connection_weight=connection_weight),
+                '''
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, x2, mask = None):
-        total_output = torch.zeros(torch.cat((x1,x2)).shape).to(self.device)
-        #x1,_,x2 = torch.svd(x)
-        #print("x before x1x2.shape",x.shape)
-        #print("x1.shape",x1.shape)
-        #print("x2.shape",x2.shape)
-        #x1 = self.to_patch_embedding(x1)
-        #x2 = self.to_patch_embedding(x2)
+        total_output = torch.zeros(x1).to(self.device)
+
         for i, layer in enumerate(self.layers):
             reservoir1, reservoir2, ff = layer
             
             #output = reservoir(x)
             
             output1 = reservoir1(x1)
-            output2 = reservoir2(x2)
-            output = torch.cat((output1,output2))
+            #output2 = reservoir2(x2)
+            #output = torch.cat((output1,output2))
             
-            output = ff(output)
+            output = ff(output1)
             total_output += output
         return total_output / self.depth
 
@@ -123,9 +120,10 @@ class Parallel_Reservoir(nn.Module):
         input_dim = dim * (round(image_size / patch_size) ** 2)
 
         
-        self.FN = nn.LayerNorm(input_dim)
-        self.LC = nn.Linear(input_dim, 100)
-        self.LC2 = nn.Linear(100, num_classes)
+        self.mlp_head = nn.Sequential(
+            nn.LayerNorm(input_dim),
+            nn.Linear(input_dim, num_classes)
+        )
         
 
     def forward(self, img, mask = None):
@@ -135,20 +133,24 @@ class Parallel_Reservoir(nn.Module):
         #b, n, _ = x.shape
         #print("x.shape1",x.shape)
         #x = self.dropout(x)
+        '''
         x1, _, x2 = torch.svd(img)
         x1 = self.to_patch_embedding(x1)
         x2 = self.to_patch_embedding(x2)
         x1 = self.dropout(x1)
         x2 = self.dropout(x2)
-        #print("x.shape2",x.shape)
         x = self.reservoir(x1, x2, mask)
+        '''
+        #print("x.shape2",x.shape)
+        
+        x = self.to_patch_embedding(img)
+        x = self.dropout(x)
+        x = self.reservoir(x)
         print("x.shape3",x.shape)
         x = x.view(x.shape[0], -1)
         print("x.shape4",x.shape)
         x = self.to_latent(x)
         print("x.shape5",x.shape)
-        x = self.FN(x)
-        x = self.LC(x)
-        x = self.LC2(x)
-        #print("x.shape6",x.shape)
+        x = self.mlp_head(x)
+        print("x.shape6",x.shape)
         return x
