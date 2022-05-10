@@ -53,20 +53,6 @@ class Reservoir(nn.Module):
                     jump_weight=jump_weight,
                     jump_size=jump_size,
                     connection_weight=connection_weight),
-                '''
-                ReservoirLayer(
-                    input_size=dim,
-                    units=reservoir_units,
-                    input_scaling=input_scaling,
-                    spectral_radius=spectral_radius,
-                    leaky=leaky,
-                    sparsity=sparsity,
-                    output_size=dim,
-                    cycle_weight=cycle_weight,
-                    jump_weight=jump_weight,
-                    jump_size=jump_size,
-                    connection_weight=connection_weight),
-                    '''
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, mask = None):
