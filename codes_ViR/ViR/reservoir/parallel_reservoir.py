@@ -69,9 +69,13 @@ class Reservoir(nn.Module):
             ]))
     def forward(self, x, mask = None):
         total_output = torch.zeros(x.shape).to(self.device)
+        x1,_,x2 = torch.svd(x)
+        print("x before x1x2.shape",x.shape)
+        print("x1.shape",x1.shape)
+        print("x2.shape",x2.shape)
         for i, layer in enumerate(self.layers):
             reservoir1, reservoir2, ff = layer
-            x1,_,x2 = torch.svd(x)
+            
             #output = reservoir(x)
             
             output1 = reservoir1(x1)
