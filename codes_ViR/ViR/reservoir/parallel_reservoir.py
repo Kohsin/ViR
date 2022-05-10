@@ -123,7 +123,7 @@ class Parallel_Reservoir(nn.Module):
         input_dim = dim * (round(image_size / patch_size) ** 2)
 
         
-        self.FN = nn.LayerNorm(input_dim),
+        self.FN = nn.LayerNorm(input_dim)
         self.LC = nn.Linear(input_dim, 100)
         self.LC2 = nn.Linear(100, num_classes)
         
