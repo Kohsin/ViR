@@ -60,9 +60,12 @@ class Reservoir(nn.Module):
         for i, layer in enumerate(self.layers):
             reservoir, ff = layer
             x1,_,x2 = x.nn.svd(x)
+            output = reservoir(x)
+            '''
             output1 = reservoir(x1)
             output2 = reservoir(x2)
             output = nn.cat(output1,output2)
+            '''
             output = ff(output)
             total_output += output
         return total_output / self.depth
@@ -110,15 +113,15 @@ class Parallel_Reservoir(nn.Module):
         #print("image.shape",img.shape)
         x = self.to_patch_embedding(img)
         b, n, _ = x.shape
-        #print("x.shape1",x.shape)
+        print("x.shape1",x.shape)
         x = self.dropout(x)
-        #print("x.shape2",x.shape)
+        print("x.shape2",x.shape)
         x = self.reservoir(x, mask)
-        #print("x.shape3",x.shape)
+        print("x.shape3",x.shape)
         x = x.view(x.shape[0], -1)
-        #print("x.shape4",x.shape)
+        print("x.shape4",x.shape)
         x = self.to_latent(x)
-        #print("x.shape5",x.shape)
+        print("x.shape5",x.shape)
         x = self.mlp_head(x)
-        #print("x.shape6",x.shape)
+        print("x.shape6",x.shape)
         return x
