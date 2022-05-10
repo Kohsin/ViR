@@ -66,7 +66,7 @@ class Reservoir(nn.Module):
                     jump_weight=jump_weight,
                     jump_size=jump_size,
                     connection_weight=connection_weight),
-                '''
+                    '''
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, mask = None):
