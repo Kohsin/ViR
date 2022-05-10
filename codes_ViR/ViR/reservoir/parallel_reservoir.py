@@ -41,7 +41,7 @@ class Reservoir(nn.Module):
         self.depth = depth
         self.to_patch_embedding = nn.Sequential(
             Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = 4, p2 = 4),
-            nn.Linear(patch_dim, dim),
+            nn.Linear(4, dim),
         )
         for i in range(self.depth):
             self.layers.append(nn.ModuleList([
