@@ -120,7 +120,7 @@ class Parallel_Reservoir(nn.Module):
 
         self.to_latent = nn.Identity()
 
-        self.input_dim = dim * (round(image_size / patch_size) ** 2)
+        input_dim = dim * (round(image_size / patch_size) ** 2)
 
         
         self.FN = nn.LayerNorm(input_dim),
