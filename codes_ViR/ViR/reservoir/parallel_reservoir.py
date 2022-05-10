@@ -39,10 +39,6 @@ class Reservoir(nn.Module):
         self.layers = nn.ModuleList([])
         self.device = device
         self.depth = depth
-        self.to_patch_embedding = nn.Sequential(
-            Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = 4, p2 = 4),
-            nn.Linear(4, dim),
-        )
         for i in range(self.depth):
             self.layers.append(nn.ModuleList([
                 ReservoirLayer(
@@ -71,14 +67,14 @@ class Reservoir(nn.Module):
                     connection_weight=connection_weight),
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
-    def forward(self, x, mask = None):
+    def forward(self, x1, x2, mask = None):
         total_output = torch.zeros(x.shape).to(self.device)
-        x1,_,x2 = torch.svd(x)
-        print("x before x1x2.shape",x.shape)
-        print("x1.shape",x1.shape)
-        print("x2.shape",x2.shape)
-        x1 = self.to_patch_embedding(x1)
-        x2 = self.to_patch_embedding(x2)
+        #x1,_,x2 = torch.svd(x)
+        #print("x before x1x2.shape",x.shape)
+        #print("x1.shape",x1.shape)
+        #print("x2.shape",x2.shape)
+        #x1 = self.to_patch_embedding(x1)
+        #x2 = self.to_patch_embedding(x2)
         for i, layer in enumerate(self.layers):
             reservoir1, reservoir2, ff = layer
             
@@ -98,12 +94,12 @@ class Parallel_Reservoir(nn.Module):
         super().__init__()
         assert image_size % patch_size == 0, 'Image dimensions must be divisible by the patch size.'
         patch_dim = channels * patch_size ** 2
-        '''
+        
         self.to_patch_embedding = nn.Sequential(
             Rearrange('b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = patch_size, p2 = patch_size),
             nn.Linear(patch_dim, dim),
         )
-        '''
+        
         self.dropout = nn.Dropout(dropout)
 
         self.reservoir = Reservoir(
@@ -137,9 +133,14 @@ class Parallel_Reservoir(nn.Module):
         #x = self.to_patch_embedding(img)
         #b, n, _ = x.shape
         #print("x.shape1",x.shape)
-        x = self.dropout(img)#x)
+        #x = self.dropout(x)
+        x1, _, x2 = torch.svd(img)
+        x1 = self.to_patch_embedding(x1)
+        x2 = self.to_patch_embedding(x2)
+        x1 = self.dropout(x1)
+        x2 = self.dropout(x2)
         print("x.shape2",x.shape)
-        x = self.reservoir(x, mask)
+        x = self.reservoir(x1, x2, mask)
         print("x.shape3",x.shape)
         x = x.view(x.shape[0], -1)
         print("x.shape4",x.shape)
