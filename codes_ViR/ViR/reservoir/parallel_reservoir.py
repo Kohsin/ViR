@@ -128,9 +128,9 @@ class Parallel_Reservoir(nn.Module):
         print("\n")
         print("image.shape",img.shape)
         #x = self.to_patch_embedding(img)
-        b, n, _ = x.shape
-        print("x.shape1",x.shape)
-        x = self.dropout(x)
+        #b, n, _ = x.shape
+        #print("x.shape1",x.shape)
+        x = self.dropout(img)#x)
         print("x.shape2",x.shape)
         x = self.reservoir(x, mask)
         print("x.shape3",x.shape)
