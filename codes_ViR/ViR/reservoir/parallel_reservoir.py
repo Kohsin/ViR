@@ -139,7 +139,7 @@ class Parallel_Reservoir(nn.Module):
         x2 = self.to_patch_embedding(x2)
         x1 = self.dropout(x1)
         x2 = self.dropout(x2)
-        print("x.shape2",x.shape)
+        #print("x.shape2",x.shape)
         x = self.reservoir(x1, x2, mask)
         print("x.shape3",x.shape)
         x = x.view(x.shape[0], -1)
