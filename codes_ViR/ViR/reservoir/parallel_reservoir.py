@@ -120,13 +120,13 @@ class Parallel_Reservoir(nn.Module):
 
         self.to_latent = nn.Identity()
 
-        input_dim = dim * (round(image_size / patch_size) ** 2)
+        self.input_dim = dim * (round(image_size / patch_size) ** 2)
 
-        self.mlp_head = nn.Sequential(
-            nn.LayerNorm(input_dim),
-            nn.Linear(input_dim, 100)
-            #nn.Linear(100, num_classes)
-        )
+        
+        self.FN = nn.LayerNorm(input_dim),
+        self.LC = nn.Linear(input_dim, 100)
+        self.LC2 = nn.Linear(100, num_classes)
+        
 
     def forward(self, img, mask = None):
         print("\n")
@@ -147,7 +147,8 @@ class Parallel_Reservoir(nn.Module):
         print("x.shape4",x.shape)
         x = self.to_latent(x)
         print("x.shape5",x.shape)
-        x = self.mlp_head(x)
-        print("x.shape6",x.shape)
-        nn.Linear(100, num_classes)
+        x = self.FN(x)
+        x = self.LC(x)
+        x = self.LC2(x)
+        #print("x.shape6",x.shape)
         return x
