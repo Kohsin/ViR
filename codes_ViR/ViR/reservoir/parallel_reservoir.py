@@ -17,6 +17,7 @@ class PreNorm(nn.Module):
         self.norm = nn.LayerNorm(dim)
         self.fn = fn
     def forward(self, x, **kwargs):
+        print("check 2")
         return self.fn(self.norm(x), **kwargs)
 
 class FeedForward(nn.Module):
