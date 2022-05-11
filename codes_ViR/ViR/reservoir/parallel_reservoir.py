@@ -12,9 +12,9 @@ class Residual(nn.Module):
         return self.fn(x, **kwargs) + x
 
 class PreNorm(nn.Module):
-    def __init__(self, 2*dim, fn):
+    def __init__(self,dim*3, fn):
         super().__init__()
-        self.norm = nn.LayerNorm(2*dim)
+        self.norm = nn.LayerNorm(dim*2)
         self.fn = fn
     def forward(self, x, **kwargs):
         return self.fn(self.norm(x), **kwargs)
