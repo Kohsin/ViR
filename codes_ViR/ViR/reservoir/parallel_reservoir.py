@@ -17,8 +17,8 @@ class PreNorm(nn.Module):
         self.norm = nn.LayerNorm(dim*2)
         self.fn = fn
     def forward(self, x, **kwargs):
-        print("check 2")
-        print("input x shape",x.shape)
+        #print("check 2")
+        #print("input x shape",x.shape)
         return self.fn(self.norm(x), **kwargs)
 
 class FeedForward(nn.Module):
@@ -32,7 +32,7 @@ class FeedForward(nn.Module):
             nn.Dropout(dropout)
         )
     def forward(self, x):
-        print("check 1",x.shape)
+        #print("check 1",x.shape)
         return self.net(x)
 
 class Reservoir(nn.Module):
@@ -71,7 +71,7 @@ class Reservoir(nn.Module):
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, x2, mask = None):
-        total_output = torch.zeros(torch.cat((x1,x2)).shape).to(self.device)
+        total_output = torch.zeros(torch.cat((x1,x2),dim=-1).shape).to(self.device)
 
         for i, layer in enumerate(self.layers):
             #reservoir1, ff = layer
@@ -84,7 +84,8 @@ class Reservoir(nn.Module):
             #output.size 100,64,256
             #print("output.shape",output.shape)
             output = ff(output)
-            print("check")
+            print("output.shape",output.shape)
+            #print("check")
             total_output += output
         return total_output / self.depth
 
