@@ -77,7 +77,7 @@ class Reservoir(nn.Module):
             
             output1 = reservoir1(x1)
             output2 = reservoir2(x2)
-            output = torch.cat((output1,output2)，dim=-1)
+            output = torch.cat([output1,output2], dim=-1)
             #output = output.view(100,64,128)
             #print("output.shape",output.shape)
             output = ff(output)
