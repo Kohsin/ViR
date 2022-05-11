@@ -30,6 +30,7 @@ class FeedForward(nn.Module):
             nn.Dropout(dropout)
         )
     def forward(self, x):
+        print("check 1",x.shape)
         return self.net(x)
 
 class Reservoir(nn.Module):
