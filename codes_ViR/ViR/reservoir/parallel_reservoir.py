@@ -78,7 +78,7 @@ class Reservoir(nn.Module):
             output1 = reservoir1(x1)
             output2 = reservoir2(x2)
             output = torch.cat((output1,output2))
-            
+            output = output.view(100,-1)
             output = ff(output)
             total_output += output
         return total_output / self.depth
@@ -151,5 +151,5 @@ class Parallel_Reservoir(nn.Module):
         print("x.shape5",x.shape)
         x = self.mlp_head(x)
         print("x.shape6",x.shape)
-        x = x.view(100,-1)
+
         return x
