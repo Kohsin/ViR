@@ -128,12 +128,12 @@ class Parallel_Reservoir(nn.Module):
 
         self.to_latent = nn.Identity()
 
-        input_dim = dim * (round(image_size / patch_size) ** 2)
+        #input_dim = dim * (round(image_size / patch_size) ** 2)
 
         
         self.mlp_head = nn.Sequential(
-            nn.LayerNorm(input_dim),
-            nn.Linear(input_dim, num_classes)
+            nn.LayerNorm(256),
+            nn.Linear(256, num_classes)
         )
         
 
