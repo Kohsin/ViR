@@ -71,7 +71,7 @@ class Reservoir(nn.Module):
                 Residual(PreNorm(dim, FeedForward(dim, mlp_dim, dropout=dropout)))
             ]))
     def forward(self, x1, x2, mask = None):
-        total_output = torch.zeros(torch.cat((x1,x2),dim=-1).shape).to(self.device)
+        total_output = torch.zeros(100,1,256).to(self.device)
 
         for i, layer in enumerate(self.layers):
             #reservoir1, ff = layer
