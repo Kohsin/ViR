@@ -69,7 +69,7 @@ class Cycle_Reservoir(torch.nn.Module):
             self.recurrent_kernel = (W + I * (self.leaky - 1)) * (1 / self.leaky)
         self.recurrent_kernel = nn.Parameter(self.recurrent_kernel, requires_grad=False)
 
-        self.weight_out = nn.Linear(self.units + self.output_size, self.output_size)
+        self.weight_out = nn.Linear(4072, self.output_size)
         self.weight = nn.Linear(self.units * 2 + self.output_size * 4, self.output_size)
 
         self.bias = torch.Tensor((torch.rand(self.units + self.input_size) * 2 - 1) * self.input_scaling)
