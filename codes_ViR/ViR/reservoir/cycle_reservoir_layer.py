@@ -86,10 +86,14 @@ class Cycle_Reservoir(torch.nn.Module):
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
         print("RC state_part .shape", state_part.shape)
         output = torch.cat([x, h_prev * (1 - self.leaky) + state_part], dim=1)
+        print("1")
         reservoir_output = torch.tanh(self.weight_out(output))
+        print("2")
         reservoir_output1 = torch.cat([x, state_part, reservoir_output,
                                       x ** 2, state_part ** 2,  reservoir_output ** 2], dim=1)
+        print("3")
         reservoir_output2 = torch.tanh(self.weight(reservoir_output1))
+        print("4")
         return state_part, reservoir_output2
 
 
