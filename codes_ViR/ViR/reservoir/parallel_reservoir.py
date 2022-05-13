@@ -139,8 +139,8 @@ class Parallel_Reservoir(nn.Module):
         #x = self.dropout(x)
         
         x1, _, x2 = torch.svd(img)
-        x1 = self.to_patch_embedding(x1)
-        x2 = self.to_patch_embedding(x2)
+        #x1 = self.to_patch_embedding(x1)
+        #x2 = self.to_patch_embedding(x2)
         x1 = self.dropout(x1)
         x2 = self.dropout(x2)
         x = self.reservoir(x1, x2, mask)
