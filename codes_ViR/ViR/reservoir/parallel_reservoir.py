@@ -84,7 +84,8 @@ class Reservoir(nn.Module):
             #output.size 100,64,256
             #print("output.shape",output.shape)
             print("output.shape",output.shape)
-            output = output.reshape(_,-1)
+            a,_,_ = output.shape
+            output = output.reshape(a,-1)
             output = ff(output)
             print("total_output.shape",total_output.shape)
             print("output.shape",output.shape)
