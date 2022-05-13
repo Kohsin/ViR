@@ -116,13 +116,13 @@ class ReservoirLayer(torch.nn.Module):
 
             #xt = x[:, t]
         self.h_prev, output = self.cycle_reservoir_layer(x, self.h_prev)
-            '''
+        '''
             if t <= 1:
                 print("x.shape","t," ,x.shape)
                 print("xt.shape","t," ,xt.shape)
                 print("self.h_prev.shape","t," ,self.h_prev.shape)
                 print("output.shape8_",t," ",output.shape)
-            '''
+        '''
         hs.append(output)
 
         hs = torch.stack(hs, dim=1)
