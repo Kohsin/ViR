@@ -126,8 +126,8 @@ class Parallel_Reservoir(nn.Module):
 
         
         self.mlp_head = nn.Sequential(
-            nn.LayerNorm(100),
-            nn.Linear(100, num_classes)
+            nn.LayerNorm(input_dim),
+            nn.Linear(input_dim, num_classes)
         )
         
 
