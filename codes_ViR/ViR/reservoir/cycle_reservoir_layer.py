@@ -55,7 +55,7 @@ class Cycle_Reservoir(torch.nn.Module):
         self.leaky = leaky
         self.sparsity = sparsity
 
-        self.kernel = torch.Tensor(init_weight(input_size, self.units, sparsity * self.input_scaling))
+        self.kernel = torch.Tensor(init_weight(24*input_size, self.units, sparsity * self.input_scaling))
         self.kernel = nn.Parameter(self.kernel, requires_grad=False)
 
         W = init_reservoir(self.units, cycle_weight, jump_weight, jump_size, connection_weight)
