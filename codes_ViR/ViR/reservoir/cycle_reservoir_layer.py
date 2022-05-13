@@ -92,6 +92,7 @@ class Cycle_Reservoir(torch.nn.Module):
         reservoir_output1 = torch.cat([x, state_part, reservoir_output,
                                       x ** 2, state_part ** 2,  reservoir_output ** 2], dim=1)
         print("3")
+        print("RC reservoir_output1 .shape", reservoir_output1.shape)
         reservoir_output2 = torch.tanh(self.weight(reservoir_output1))
         print("4")
         return state_part, reservoir_output2
