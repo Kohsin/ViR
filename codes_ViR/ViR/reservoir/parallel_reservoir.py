@@ -14,7 +14,7 @@ class Residual(nn.Module):
 class PreNorm(nn.Module):
     def __init__(self,dim, fn):
         super().__init__()
-        self.norm = nn.LayerNorm(dim)
+        self.norm = nn.LayerNorm(dim*2)
         self.fn = fn
     def forward(self, x, **kwargs):
         #print("check 2")
@@ -28,7 +28,7 @@ class FeedForward(nn.Module):
             nn.Linear(dim, hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim, dim),
+            nn.Linear(hidden_dim, dim*2),
             nn.Dropout(dropout)
         )
     def forward(self, x):
