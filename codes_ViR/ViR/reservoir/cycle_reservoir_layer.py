@@ -76,6 +76,8 @@ class Cycle_Reservoir(torch.nn.Module):
         self.bias = nn.Parameter(self.bias, requires_grad=False)
 
     def forward(self, xt, h_prev):
+        print("RC xt.shape", xt.shape)
+        print("RC h_prev.shape", xt.shape)
         x = xt.clone().detach()
         input_part = torch.mm(x, self.kernel)
         state_part = torch.tanh(torch.mm(h_prev, self.recurrent_kernel) + input_part)
@@ -112,13 +114,13 @@ class ReservoirLayer(torch.nn.Module):
 
             xt = x[:, t]
             self.h_prev, output = self.cycle_reservoir_layer(xt, self.h_prev)
-            '''
-            if t <= 2:
-                print("x.shape8_",t," ",x.shape)
-                print("xt.shape8_",t," ",xt.shape)
-                print("self.h_prev.shape8_",t," ",self.h_prev.shape)
+            
+            if t <= 1:
+                print("x.shape","t," ,x.shape)
+                print("xt.shape","t," ,xt.shape)
+                print("self.h_prev.shape","t," ,self.h_prev.shape)
                 print("output.shape8_",t," ",output.shape)
-            '''
+            
             hs.append(output)
 
         hs = torch.stack(hs, dim=1)
