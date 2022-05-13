@@ -14,7 +14,7 @@ class Residual(nn.Module):
 class PreNorm(nn.Module):
     def __init__(self,dim, fn):
         super().__init__()
-        self.norm = nn.LayerNorm(dim*2)
+        self.norm = nn.LayerNorm(dim)
         self.fn = fn
     def forward(self, x, **kwargs):
         #print("check 2")
@@ -25,10 +25,10 @@ class FeedForward(nn.Module):
     def __init__(self, dim, hidden_dim, dropout = 0.):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(dim*2, hidden_dim),
+            nn.Linear(dim, hidden_dim),
             nn.GELU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim, dim *2),
+            nn.Linear(hidden_dim, dim),
             nn.Dropout(dropout)
         )
     def forward(self, x):
@@ -126,8 +126,8 @@ class Parallel_Reservoir(nn.Module):
 
         
         self.mlp_head = nn.Sequential(
-            nn.LayerNorm(input_dim *2),
-            nn.Linear(input_dim *2, num_classes)
+            nn.LayerNorm(100),
+            nn.Linear(100, num_classes)
         )
         
 
