@@ -152,7 +152,7 @@ class Parallel_Reservoir(nn.Module):
         x = self.reservoir(x1, x2, mask)
         
         #print("x.shape2",x.shape)
-        
+        print("x.shape 155",x.shape)
         #x = self.to_patch_embedding(img)
         #x = self.dropout(x)
         #x = self.reservoir(x)
