@@ -83,6 +83,7 @@ class Reservoir(nn.Module):
             output = torch.cat([output1,output2],dim=-1)
             #output.size 100,64,256
             #print("output.shape",output.shape)
+            print("output.shape",output.shape)
             output = ff(output)
             print("total_output.shape",total_output.shape)
             print("output.shape",output.shape)
