@@ -70,6 +70,7 @@ class Cycle_Reservoir(torch.nn.Module):
         self.recurrent_kernel = nn.Parameter(self.recurrent_kernel, requires_grad=False)
 
         self.weight_out = nn.Linear(4072, self.output_size)
+        self.weight2 = nn.Linear(8400, self.output_size)
         self.weight = nn.Linear(self.units * 2 + self.output_size * 4, self.output_size)
 
         self.bias = torch.Tensor((torch.rand(self.units + self.input_size) * 2 - 1) * self.input_scaling)
@@ -93,7 +94,7 @@ class Cycle_Reservoir(torch.nn.Module):
                                       x ** 2, state_part ** 2,  reservoir_output ** 2], dim=1)
         print("3")
         print("RC reservoir_output1 .shape", reservoir_output1.shape)
-        reservoir_output2 = torch.tanh(self.weight(reservoir_output1))
+        reservoir_output2 = torch.tanh(self.weight2(reservoir_output1))
         print("4")
         return state_part, reservoir_output2
 
